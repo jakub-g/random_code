@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+
+let fs = require('fs')
+let FILE_NAME = 'random.txt'
+let LENGTH = process.argv[2] || 100
+let ALPHABET = 'abcdef'
+
+var min = 0
+var max = ALPHABET.length
+
+var contents = new Array(LENGTH)
+for (var i = 0; i < LENGTH; i++) {
+    var rand = Math.floor(Math.random() * (max - min)) + min
+    contents[i] = ALPHABET[rand]
+}
+
+fs.writeFileSync(FILE_NAME, contents.join(''))
