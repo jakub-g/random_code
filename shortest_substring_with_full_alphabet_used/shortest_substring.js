@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-let VERBOSE = 1;
+let VERBOSE = 0;
 let DEFAULT_FILE = 'random.txt'
 let inputFile = process.argv[2]
 if (!inputFile) {
@@ -25,7 +25,7 @@ function visualize(i, j) {
     var matchLen = (j - i + 1);
     var matchedSubstring = INPUT_ARR.slice(i, j + 1).join('')
 
-    if (VERBOSE == 2) {
+    if (VERBOSE >= 2) {
         console.log(INPUT_STR);
 
         //var asterisks = ' '.repeat(i) + '*' + ' '.repeat(j - i - 1) + '*'
@@ -39,6 +39,15 @@ function visualize(i, j) {
 }
 
 function main() {
+    if (VERBOSE >= 1) {
+        console.log(INPUT_STR)
+    }
+    console.log('Input length: ' + INPUT_LEN)
+    console.log('Alphabet length: ' + ALPHABET_LEN)
+    console.log()
+    console.log("-------------------------------------")
+    console.log()
+
     var [i, j] = findBestMatch();
     if (i == -1) {
         console.log('No match found!')
@@ -97,12 +106,16 @@ function tryFindingBetterThan(matchLen, leftIdx, rightIdx, minimumLeftIdx) {
     while (i + soughtLen < INPUT_LEN) {
         var j = i + soughtLen - 1;
         if (isMatchInclusive(i, j)) {
-            console.log('Found better match!')
-            visualize(i, j)
+            if (VERBOSE >= 1) {
+                console.log('Found better match!')
+                visualize(i, j)
+            }
 
             var betterIdxLeft = shrinkMatchLeftInclusive(i, j)
-            console.log('Left-optimized it:')
-            visualize(betterIdxLeft, j)
+            if (VERBOSE >= 1) {
+                console.log('Left-optimized it:')
+                visualize(betterIdxLeft, j)
+            }
 
             return findBestMatchFromStartingMatch(betterIdxLeft, j)
         } else {
@@ -121,10 +134,6 @@ function lenOfArr(idxLeft, idxRight) {
  * @return {Int} the idxRight (inclusive) of the matching slice's right side, or -1 if not found
  */
 function findFirstMatch() {
-    console.log(INPUT_STR)
-    console.log("-------------------------------------")
-        //visualize(0, INPUT_LEN - 1)
-
     var idxRight = ALPHABET_LEN - 1;
     while (idxRight < INPUT_LEN) {
         if (isMatchInclusive(0, idxRight)) {
@@ -143,12 +152,16 @@ function findLeftOptimizedFirstMatch() {
         console.log('No match!')
         return false
     } else {
-        console.log('First match found!')
-        visualize(0, rightIdx)
+        if (VERBOSE >= 1) {
+            console.log('First match found!')
+            visualize(0, rightIdx)
+        }
 
         var betterIdxLeft = shrinkMatchLeftInclusive(0, rightIdx)
-        console.log('Optimized first match:')
-        visualize(betterIdxLeft, rightIdx)
+        if (VERBOSE >= 1) {
+            console.log('Optimized first match:')
+            visualize(betterIdxLeft, rightIdx)
+        }
         return [betterIdxLeft, rightIdx]
     }
 }
