@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
-var DEFAULT_FILE = 'input1.txt'
-var inputFile = process.argv[2]
+let VERBOSE = 1;
+let DEFAULT_FILE = 'random.txt'
+let inputFile = process.argv[2]
 if (!inputFile) {
     console.error('No input file, assuming ' + DEFAULT_FILE)
     inputFile = DEFAULT_FILE
@@ -18,13 +19,23 @@ let ALPHABET_ARR = INPUT_ARR.slice().sort().filter((elem, idx, arr) => idx == 0 
 let INPUT_LEN = INPUT_ARR.length;
 let ALPHABET_LEN = ALPHABET_ARR.length;
 
+let START_TIME = Date.now()
+
 function visualize(i, j) {
-    console.log(INPUT_STR);
+    var matchLen = (j - i + 1);
+    var matchedSubstring = INPUT_ARR.slice(i, j + 1).join('')
 
-    //var str = ' '.repeat(i) + '*' + ' '.repeat(j - i - 1) + '*'
-    var str = ' '.repeat(i) + '*'.repeat(j - i + 1)
+    if (VERBOSE == 2) {
+        console.log(INPUT_STR);
 
-    console.log(str + ' len = ' + (j - i + 1))
+        //var asterisks = ' '.repeat(i) + '*' + ' '.repeat(j - i - 1) + '*'
+        var asterisks = ' '.repeat(i) + '*'.repeat(j - i + 1)
+
+        console.log(asterisks + ' len = ' + matchLen)
+    }
+
+    console.log('len: ' + matchLen + ', startPos: ' + i + ', substring: "' + matchedSubstring + '"')
+    console.log()
 }
 
 function main() {
@@ -34,6 +45,9 @@ function main() {
     } else {
         console.log('Finished, best match is:')
         visualize(i, j)
+
+        let diffMs = Date.now() - START_TIME
+        console.log('Took ' + diffMs + ' milliseconds')
     }
 }
 
@@ -107,7 +121,9 @@ function lenOfArr(idxLeft, idxRight) {
  * @return {Int} the idxRight (inclusive) of the matching slice's right side, or -1 if not found
  */
 function findFirstMatch() {
-    visualize(0, INPUT_LEN - 1)
+    console.log(INPUT_STR)
+    console.log("-------------------------------------")
+        //visualize(0, INPUT_LEN - 1)
 
     var idxRight = ALPHABET_LEN - 1;
     while (idxRight < INPUT_LEN) {
