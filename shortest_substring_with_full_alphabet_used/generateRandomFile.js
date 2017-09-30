@@ -3,7 +3,7 @@
 let fs = require('fs')
 let FILE_NAME = 'random.txt'
 let LENGTH = process.argv[2] || 160
-let ALPHABET = 'abcdef'
+let ALPHABET = process.argv[3] || 'abcdef'
 
 var min = 0
 var max = ALPHABET.length
