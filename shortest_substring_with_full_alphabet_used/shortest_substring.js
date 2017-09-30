@@ -47,6 +47,11 @@ function findBestMatch() {
 }
 
 function findBestMatchFromStartingMatch(leftIdx, rightIdx) {
+    if (lenOfArr(leftIdx, rightIdx) == ALPHABET_LEN) {
+        console.log('Match length is equal to alphabet length, can not do any better!')
+        return [leftIdx, rightIdx]
+    }
+
     // [p----------q]
     var matchLen = lenOfArr(leftIdx, rightIdx)
 
